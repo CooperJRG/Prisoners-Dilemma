@@ -20,8 +20,8 @@ def main():
     n = 10
     fib_sequence = fibonacci(n)
     print(fib_sequence)
-    
-    
+
+
 if __name__ == "__main__":
     main()
     
