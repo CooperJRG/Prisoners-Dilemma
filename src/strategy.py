@@ -2,6 +2,7 @@ import random
 import memory
 import time
 
+
 class Strategy:
     DEFAULT_BEHAVIOR_BIT = 63
     RANDOM_ACT_BIT = 62
@@ -17,6 +18,7 @@ class Strategy:
         self.genome = genome
         self.name = 'strategy'
         self.behavior = self.interpret_strategy(genome)
+        self.fitness = 0
 
     @staticmethod
     def generate_random_strategy():
