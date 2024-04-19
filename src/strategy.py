@@ -41,7 +41,7 @@ class Strategy:
         # Does it have memory?
         behavior['memory'] = (genome >> Strategy.MEMORY_BIT) & 0x1
         # Decode memory window size
-        behavior['mem_window'] = min(genome >> Strategy.MEMORY_WINDOW_START_BIT & 0xFF, 1)
+        behavior['mem_window'] = max(genome >> Strategy.MEMORY_WINDOW_START_BIT & 0xFF, 1)
 
         # Decode strategy priorities and probabilities
         strategy_names = ['grudge', 'sorry', 'cc', 'cd', 'dc', 'dd']
@@ -153,36 +153,19 @@ class Strategy:
         return 'cooperate'
     
 def main():
-    # Start timing
-    start_time = time.time()
- 
-    # Simulate decisions and update memory
-    for _ in range(5000):  # Simulate 1,000,000 rounds
-        # Initialize strategies
-        strategy_one = Strategy.generate_random_strategy()
-        strategy_two = Strategy.generate_random_strategy()
-        strategy_one.name = 'strategy_one'
-        strategy_two.name = 'strategy_two'
-
-        # Initialize memory object
-        test_history = memory.Memory()
-        for k in range(200):
-            decision_one = strategy_one.make_decision(test_history)
-            decision_two = strategy_two.make_decision(test_history)
-
-            test_history.update_memory('strategy_one', decision_one[0])
-            test_history.update_memory('strategy_two', decision_two[0])
-            
-
-    # Stop timing
-    elapsed_time = time.time() - start_time
-
-    # Print elapsed time
-    print(f"Elapsed time: {elapsed_time:.2f} seconds")
-
-    # Retrieve and print interaction counts
-    interaction_counts = test_history.get_interaction_counts('strategy_one', 200)
-    print(interaction_counts)
+    # Create a random strategy
+    tit_for_tat = Strategy(0b1000000000010000000010000010000000000000000000000000000000000100)
+    mem = memory.Memory()
+    tit_for_tat.name = 'strategy_one'
+    mem.update_memory('strategy_one', 'c')
+    mem.update_memory('strategy_two', 'd')
+    mem.update_memory('strategy_one', 'c')
+    mem.update_memory('strategy_two', 'c')
+    mem.update_memory('strategy_one', 'c')
+    mem.update_memory('strategy_two', 'c')
+    print(tit_for_tat.make_decision(mem))
+    print(tit_for_tat.behavior)
+    print(bin(tit_for_tat.genome))
 
 if __name__ == "__main__":
     main()

@@ -23,6 +23,33 @@ class Memory:
         if strategy_name in self.history:
             return len(self.history[strategy_name])
         return 1
+    
+    def score(self):
+        """
+        Calculate the score of the game history.
+
+        :return: A tuple with the scores for strategy one and strategy two.
+        """
+        if 'strategy_one' not in self.history or 'strategy_two' not in self.history:
+            return 0, 0
+
+        score_one = 0
+        score_two = 0
+        for move_one, move_two in zip(self.history['strategy_one'], self.history['strategy_two']):
+            if move_one == 'c' and move_two == 'c':
+                score_one += 3
+                score_two += 3
+            elif move_one == 'c' and move_two == 'd':
+                score_one += 0
+                score_two += 5
+            elif move_one == 'd' and move_two == 'c':
+                score_one += 5
+                score_two += 0
+            elif move_one == 'd' and move_two == 'd':
+                score_one += 1
+                score_two += 1
+
+        return score_one, score_two
 
     def get_interaction_counts(self, strategy_name, memory_window):
         """
